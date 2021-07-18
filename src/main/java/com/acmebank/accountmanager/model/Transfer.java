@@ -1,31 +1,37 @@
 package com.acmebank.accountmanager.model;
 
-import lombok.Data;
+import com.acmebank.accountmanager.validators.MoneyFormatConstraint;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.*;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
-@Entity
-@Table(name="TRANSFER")
-@Data
+@Data @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class Transfer {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-
-    @lombok.NonNull
-    @org.springframework.lang.NonNull
+    @NonNull
+    @NotNull
     int sourceAccountNumber;
 
-    @lombok.NonNull
-    @org.springframework.lang.NonNull
+    @NonNull
+    @NotNull
     int acquirerAccountNumber;
 
-    @lombok.NonNull
-    @org.springframework.lang.NonNull
+    @NonNull
+    @NotNull
+    @MoneyFormatConstraint
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     BigDecimal transferAmount;
 
+    @JsonIgnore
     boolean transferComplete;
 }
+
